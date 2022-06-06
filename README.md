@@ -55,7 +55,7 @@ var card string = "Ace of Spades"
 
 &nbsp;
 
-## Struct
+## Structs & Maps
 
 |  Type  | Zero Value |
 | :----: | :--------: |
@@ -115,6 +115,22 @@ func (pointerToPerson *person) updateName(newFirstName string) {
 
 - When we create a slice, Go will automatically create which two data structures?
   - An array and a structure that records the length of the slice, the capacity of the slice, and a reference to the underlying array
+
+&nbsp;
+
+---
+
+&nbsp;
+
+|                         Map                         |                            Struct                             |
+| :-------------------------------------------------: | :-----------------------------------------------------------: |
+|       All keys & values must be the same type       |                Values can be of different type                |
+|     Keys are indexed - we can iterate over them     |                  Keys don't support indexing                  |
+|                   Reference Type                    |                          Value Type                           |
+| Use to represent a collection of related properties | Use to represent a "thing" with a lot of different properties |
+|   Don't need to know all the keys at compile time   |   You need to know all the different fields at compile time   |
+
+- Map is good for closely related items liek color and hex codes
 
 &nbsp;
 
