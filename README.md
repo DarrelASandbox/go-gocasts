@@ -137,3 +137,46 @@ func (pointerToPerson *person) updateName(newFirstName string) {
 ---
 
 &nbsp;
+
+## Interfaces
+
+- We know that...
+  - Every value has a type
+  - Every function has to specify the type of its arguments
+- So does that mean...
+  - Every function we ever write has to be rewritten to accommodate different types even if the logic in it is identical?
+
+```go
+type bot interface {
+  getGreeting(string, int)(string, error)
+}
+
+// Function name
+// List of argument types
+// List of return types
+```
+
+| Concrete Type | Interface Type |
+| :-----------: | :------------: |
+|      map      |      bot       |
+|    struct     |                |
+|      int      |                |
+|    string     |                |
+|  englishBot   |                |
+
+|                                                                 |                                                                                                                      |
+| :-------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
+|                Interfaces are not generic types                 |                            Other languages have 'generic' types - go (famously) does not.                            |
+|                    Interfaces are 'implicit'                    |                     We don't manually have to say that our custom type satisfies some interface.                     |
+|        Interfaces are a contract to help us manage types        | GARBAGE IN -> GARBAGE OUT. If our custom type's implementation of a function is broken then interfaces wont help us! |
+| Interfaces are tough. Step #1 is understanding how to read them | Understand how to read interfaces in the standard lib. Writing your own interfaces is tough and requires experience  |
+
+![response-struct](./diagrams/diagrams-014-response-struct.png)
+
+- [Reader Interface](https://pkg.go.dev/io#Reader)
+
+&nbsp;
+
+---
+
+&nbsp;
