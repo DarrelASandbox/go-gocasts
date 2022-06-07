@@ -180,3 +180,120 @@ type bot interface {
 ---
 
 &nbsp;
+
+## Goroutines
+
+![scheduler](./diagrams/diagrams-007-scheduler.png)
+&nbsp;
+![multiple-threads](./diagrams/diagrams-010-multiple-threads.png)
+&nbsp;
+![concurrency](diagrams/diagrams-014-concurrency.png)
+&nbsp;
+![parallelism](diagrams/diagrams-015-parallelism.png)
+&nbsp;
+![goroutine-threads](diagrams/diagrams-009-goroutine-threads.png)
+&nbsp;
+![goroutine-early-exit](diagrams/diagrams-014-goroutine-early-exit.png)
+&nbsp;
+![goroutine-timeline](diagrams/diagrams-020-goroutine-timeline.png)
+
+- [A Tour of Go - Channels](https://go.dev/tour/concurrency/2)
+- [WaitGroup](https://pkg.go.dev/sync#WaitGroup)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>David: </b> Function literals
+> Function literals can be pretty tricky to understand at first. The best way to describe it is that function literals can be used either in-place (what the author does) or as values, assigned to a variable name. Let's start with a simpler example than the one in the lesson, which creates an function literal (sometimes also referred to as an "anonymous" or "unnamed" function) and executes it in-place:
+
+```go
+    func() {
+        fmt.Println("my function was executed")
+    }()
+```
+
+> This is valid Go code that, when run, will print the line "my function was executed". The reason it executes immediately is because it's not only being defined, but it's also being called, by placing the () at the end of the function definition. This will become clearer very soon. Let's do the same thing as above, but instead of executing it immediately, let's assign it to a variable name. A variable name you say? Yes. Go actually has a func() type just like int, bool, string, etc., that can be assigned to a variable:
+
+```go
+    var myFunc func() // declare a variable named myFunc of type func()
+    myFunc = func() { // assign a function literal to the myFunc variable
+        fmt.Println("my function was executed")
+    }
+```
+
+> Or, you can use Go's := to do the same thing more succinctly:
+
+```go
+    myFunc := func() {
+        fmt.Println("my function was executed")
+    }
+```
+
+> This is the same way I declared the function literal at the top of this answer, only I assigned it to a variable instead of immediately executing it. Note that the func() type is made up of the whole function signature. So for a function that doesn't accept any arguments its type is func() while a function that accepts a string and int64 as arguments would have a type of func(string, int64) and so on.
+>
+> You can confirm the type of the myFunc variable just like any other variable:
+
+```go
+    fmt.Printf("myFunc's type is %T\n", myFunc)
+    // prints: myFunc's type is func() <-- a function assigned to a variable of type func()
+```
+
+> Now that you have a function assigned to the myFunc variable, you can execute it by placing parentheses () after it, just like any other function:
+
+```go
+    myFunc()
+    // prints: my function was executed
+```
+
+> The parentheses is what causes the function to execute. The above code is identical in behavior to defining and executing named functions, which we all recognize:
+
+```go
+func myFunc() {
+    fmt.Println("my function was executed")
+}
+
+func main() {
+    myFunc()  // prints: my function was executed
+}
+```
+
+> But why would we use function literals (executed immediately or assigned to variable names) instead of the usual way? As in the lesson video, because it's convenient and easy to read, and it's the only way you can create a function inside of another function. You need a function for a particular task but you are never going to need it elsewhere in your code, so why not just define and execute it in-place instead of creating a named function that will never be called again and that you need to scroll elsewhere in the code to find? In other scenarios, assigning a function literal to a variable allows you to treat it as a value that you can pass around to other functions:
+
+```go
+func main() {
+    myFunc := func() {
+        fmt.Println("my function was executed")
+    }
+    runMyFunction(myFunc)
+}
+
+// runMyFunction takes a function, f, as an argument and executes it
+func runMyFunction(f func()) {
+    f() // execute the function that was passed in
+    // prints: my function was executed
+}
+```
+
+> Here's something you might find interesting: Just as you can execute function literals immediately without assigning them to variables first (as the author does in the video), you can also pass function literals to other functions directly without assigning them to a variable first. Just like any other literal, you can pass a function literal as a value. This code has the exact same behavior as the code above:
+
+```go
+func main() {
+    runMyFunction(func() { fmt.Println("my function was executed") })
+}
+
+func runMyFunction(f func()) {
+    f() // execute the function that was passed in
+    // prints: my function was executed
+}
+```
+
+> Hopefully this helps shed more illumination on the topic of function literals.
+
+&nbsp;
+
+---
+
+&nbsp;
